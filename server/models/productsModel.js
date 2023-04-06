@@ -1,14 +1,14 @@
-const { Client } = require('pg');
+import pkg from 'pg';
 
-async function testFunc() {
-  const client = new Client({
-    host: 'postgresql://localhost:5432',
-  });
-  await client.connect();
+const { Client } = pkg;
 
-  const res = await client.query('SELECT $1::text as message', ['Hello world!']);
-  console.log(res.rows[0].message);
-  await client.end();
-}
+const client = new Client({
+  host: 'localhost',
+  port: 5432,
+  user: 'johnathansimeroth',
+});
+await client.connect();
 
-testFunc();
+const res = await client.query('SELECT $1::text as message', ['Hello world!']);
+console.log(res.rows[0].message);
+await client.end();
