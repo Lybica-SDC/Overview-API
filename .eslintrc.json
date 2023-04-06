@@ -6,7 +6,7 @@
   },
   "extends": [
     //   "plugin:react/recommended",
-    //   "airbnb/hooks",
+      "airbnb/hooks",
       "airbnb"
   ],
   "overrides": [
@@ -19,6 +19,6 @@
     //   "react"
   ],
   "rules": {
-      "react/prop-types": "off"
+      // "react/prop-types": "off"
   }
 }
