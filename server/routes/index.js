@@ -1,3 +1,3 @@
 const products = require('./productsRoutes');
 
-module.exports.products = products;
+exports.products = products;

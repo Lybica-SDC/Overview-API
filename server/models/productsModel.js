@@ -1,14 +1,34 @@
-import pkg from 'pg';
+const pgp = require('pg-promise')();
 
-const { Client } = pkg;
-
-const client = new Client({
+const cn = {
   host: 'localhost',
   port: 5432,
   user: 'johnathansimeroth',
-});
-await client.connect();
+  database: 'lybica',
+};
 
-const res = await client.query('SELECT $1::text as message', ['Hello world!']);
-console.log(res.rows[0].message);
-await client.end();
+const db = pgp(cn);
+
+exports.listProducts = ({ page = 1, count = 5 }) => {
+  const query = 'SELECT * FROM products WHERE id > $1 ORDER BY id ASC LIMIT $2';
+  const params = [(page - 1) * count, count];
+  return db.any(query, params);
+};
+
+exports.getProductByID = ({ id }) => {
+  const query = 'SELECT * FROM products WHERE id = $1';
+  const params = [id];
+  return db.any(query, params);
+};
+
+exports.getStyles = ({ id }) => {
+  const query = 'SELECT * FROM styles WHERE product_id = $1';
+  const params = [id];
+  return db.any(query, params);
+};
+
+exports.getRelatedProducts = ({ id }) => {
+  const query = 'SELECT related_product_id FROM related WHERE current_product_id = $1';
+  const params = [id];
+  return db.any(query, params);
+};
