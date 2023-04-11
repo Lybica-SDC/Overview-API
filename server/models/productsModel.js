@@ -62,14 +62,22 @@ exports.getStyles = async ({ id }) => { // using joins
   //   s.sale_price,
   //   s.original_price,
   //   s."default?",
-  //   json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) AS photos,
-  //   json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity)) AS skus
+  //   (
+  //     SELECT json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url))
+  //     FROM photos p
+  //     WHERE p.style_id = s.id
+  //   ) AS photos,
+  //   (
+  //     SELECT json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity))
+  //     FROM skus k
+  //     WHERE k.style_id = s.id
+  //   ) AS skus
   // FROM styles s
   // LEFT JOIN photos p ON p.style_id = s.id
-  // LEFT JOIN skus k ON k.style_id = s.id
   // WHERE s.product_id = $1
   // GROUP BY s.id;
   // `;
+
   const params = [id];
   const stylesObj = { product_id: id.toString() };
   stylesObj.results = await db.any(query, params);

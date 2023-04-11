@@ -12,6 +12,8 @@ export const options = {
 
 export default function () {
   const productID = productIDs[pickRand(max)];
-  http.get(`http://localhost:3005/products/${productID}/styles`);
+  http.get(`http://localhost:3005/products/${productID}/styles`, {
+    tags: { name: 'getStylesURL' },
+  });
   sleep(0);
 }
