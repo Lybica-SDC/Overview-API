@@ -38,19 +38,38 @@ exports.getProductByID = async ({ id }) => { // join table approach
 exports.getStyles = async ({ id }) => { // using joins
   const query = `
   SELECT
-    s.id,
+    s.id AS style_id,
     s.name,
     s.sale_price,
     s.original_price,
     s."default?",
     json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) AS photos,
-    json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity)) AS skus
+    (
+      SELECT json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity))
+      FROM skus k
+      WHERE k.style_id = s.id
+    ) AS skus
   FROM styles s
-  JOIN photos p ON p.style_id = s.id
-  JOIN skus k ON k.style_id = s.id
+  LEFT JOIN photos p ON p.style_id = s.id
   WHERE s.product_id = $1
   GROUP BY s.id;
   `;
+
+  // const query = `
+  // SELECT
+  //   s.id AS style_id,
+  //   s.name,
+  //   s.sale_price,
+  //   s.original_price,
+  //   s."default?",
+  //   json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url)) AS photos,
+  //   json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity)) AS skus
+  // FROM styles s
+  // LEFT JOIN photos p ON p.style_id = s.id
+  // LEFT JOIN skus k ON k.style_id = s.id
+  // WHERE s.product_id = $1
+  // GROUP BY s.id;
+  // `;
   const params = [id];
   const stylesObj = { product_id: id.toString() };
   stylesObj.results = await db.any(query, params);
