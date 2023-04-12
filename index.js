@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../Lybica-Client/dist')));
 app.use('/products', router.products);
 app.use('/loaderio-db5eddc9c943bbf55107647244f05b67', (req, res) => {
-  res.sendFile('./loaderio-db5eddc9c943bbf55107647244f05b67.txt');
+  res.sendFile(path.join(__dirname, 'loaderio-db5eddc9c943bbf55107647244f05b67.txt'));
 });
 
 const port = process.env.PORT || 3000;
