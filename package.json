@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "test",
-    "server-dev": "npx nodemon --watch"
+    "server-dev": "npx nodemon --watch",
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
