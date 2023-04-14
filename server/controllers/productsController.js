@@ -1,6 +1,6 @@
 const db = require('../models/productsModel');
 
-// const ids = [];
+const ids = [];
 
 const tryCatch = async (req, res, dbFunc, errMsg, params, sucStatus = 200, failStatus = 500) => {
   try {
@@ -27,8 +27,8 @@ exports.getProductByID = (req, res) => {
 };
 
 exports.getStyles = (req, res) => {
-  // ids.push(req.params.id);
-  // console.log('requests served: ', ids.length);
+  ids.push(req.params.id);
+  console.log('requests served: ', ids.length);
   const params = { id: req.params.id };
   tryCatch(req, res, db.getStyles, `Error getting styles for product ${params.id}`, params);
 };
