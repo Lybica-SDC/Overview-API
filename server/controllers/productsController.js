@@ -8,6 +8,7 @@ const tryCatch = async (req, res, dbFunc, errMsg, params, sucStatus = 200, failS
     res.status(sucStatus);
     res.send(result);
   } catch (err) {
+    console.log(err);
     res.status(failStatus);
     res.send(`${errMsg}: ${err}`);
   }

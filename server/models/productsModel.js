@@ -9,6 +9,13 @@ const cn = {
   password: process.env.PGPASSWORD,
 };
 
+// const cn = {
+//   host: 'localhost',
+//   port: 5432,
+//   database: 'lybica',
+//   user: 'johnathansimeroth',
+// };
+
 const db = pgp(cn);
 
 exports.listProducts = ({ page = 1, count = 5 }) => {
@@ -56,29 +63,6 @@ exports.getStyles = async ({ id }) => { // using joins
   WHERE s.product_id = $1
   GROUP BY s.id;
   `;
-
-  // const query = `
-  // SELECT
-  //   s.id AS style_id,
-  //   s.name,
-  //   s.sale_price,
-  //   s.original_price,
-  //   s."default?",
-  //   (
-  //     SELECT json_agg(json_build_object('thumbnail_url', p.thumbnail_url, 'url', p.url))
-  //     FROM photos p
-  //     WHERE p.style_id = s.id
-  //   ) AS photos,
-  //   (
-  //     SELECT json_object_agg(k.id, json_build_object('size', k.size, 'quantity', k.quantity))
-  //     FROM skus k
-  //     WHERE k.style_id = s.id
-  //   ) AS skus
-  // FROM styles s
-  // LEFT JOIN photos p ON p.style_id = s.id
-  // WHERE s.product_id = $1
-  // GROUP BY s.id;
-  // `;
 
   const params = [id];
   const stylesObj = { product_id: id.toString() };
