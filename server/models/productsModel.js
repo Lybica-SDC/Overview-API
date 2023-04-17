@@ -8,6 +8,7 @@ const cn = {
   user: process.env.PGUSER,
   password: process.env.PGPASSWORD,
 };
+console.log(cn);
 
 // const cn = {
 //   host: 'localhost',
